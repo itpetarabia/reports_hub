@@ -25,7 +25,7 @@ def process_file(stock_file_as_binary):
     # Pivot stock data to have one column per location
     stock_df.dropna(subset='Product/Barcode', axis=0, inplace=True)
     # prices_df = stock_df[['Product/Barcode', 'Product/Sales Price']].drop_duplicates()
-    prices_df = pd.read_csv('all.products.csv', dtype={'Sales Price': float})
+    prices_df = pd.read_csv('all.products.csv', dtype={'Public Price': float})
 
     columns_to_select = ['Product/Barcode', 'Location', 'Available Quantity']
     stock_df = stock_df[columns_to_select].copy()
@@ -51,7 +51,7 @@ def process_file(stock_file_as_binary):
     merged_df = merged_df.fillna(0)
     merged_df = merged_df.merge(prices_df, on='Product/Barcode', how='left')
     merged_df.drop('id', axis=1, inplace=True)
-    merged_df.rename(columns={'Product/Barcode': 'Barcode', 'Sales Price': 'original_price'}, inplace=True)
+    merged_df.rename(columns={'Product/Barcode': 'Barcode', 'Public Price': 'original_price'}, inplace=True)
     # print(merged_df)
     # # Save the final result to a CSV
     output_file = 'updated_stock.csv'
