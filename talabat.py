@@ -114,11 +114,14 @@ def sftp_upload_files(list_of_file_paths):
 # if __name__ == '__main__':
 
 def process_and_send_stock(binary_file):
-    st.toast('Processing File')
+    
     process_file(binary_file)
+    my_bar = st.progress(0, text='Processing')
+    my_bar.progress(0.33, text='Reading File')
 
     files = [os.path.join('talabat_files', file) for file in os.listdir('talabat_files')]
-    st.toast('Sending File To Talabat')
+    my_bar.progress(0.66, text='Sending To Talabat')
     sftp_upload_files(files)
-    st.toast('Done 🎉')
+    my_bar.empty()
+    st.success('Done 🎉')
     
