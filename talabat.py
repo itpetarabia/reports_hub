@@ -24,7 +24,8 @@ def process_file(stock_file_as_binary):
 
     # Pivot stock data to have one column per location
     stock_df.dropna(subset='Product/Barcode', axis=0, inplace=True)
-    prices_df = stock_df[['Product/Barcode', 'Product/Sales Price']].drop_duplicates()
+    # prices_df = stock_df[['Product/Barcode', 'Product/Sales Price']].drop_duplicates()
+    prices_df = pd.read_csv('all.products.csv', dtype={'Sales Price': float})
 
     columns_to_select = ['Product/Barcode', 'Location', 'Available Quantity']
     stock_df = stock_df[columns_to_select].copy()
@@ -50,7 +51,7 @@ def process_file(stock_file_as_binary):
     merged_df = merged_df.fillna(0)
     merged_df = merged_df.merge(prices_df, on='Product/Barcode', how='left')
     merged_df.drop('id', axis=1, inplace=True)
-    merged_df.rename(columns={'Product/Barcode': 'Barcode', 'Product/Sales Price': 'original_price'}, inplace=True)
+    merged_df.rename(columns={'Product/Barcode': 'Barcode', 'Sales Price': 'original_price'}, inplace=True)
     # print(merged_df)
     # # Save the final result to a CSV
     output_file = 'updated_stock.csv'
@@ -64,6 +65,7 @@ def process_file(stock_file_as_binary):
     for col, talabat_id in locations.items():
         branch_df = pd.concat([merged_df[['Barcode', 'original_price']], merged_df[[col]]], axis=1)
         branch_df.rename(columns={col: 'active'}, inplace=True)
+        branch_df.active = branch_df.active.apply(lambda x: 1 if x>0 else 0)
         columns_hidden = list(set(necessary_columns) - set(branch_df.columns))
         branch_df[columns_hidden] = ''
         
