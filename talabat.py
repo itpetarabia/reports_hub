@@ -13,6 +13,7 @@ locations = {
     "Physical Locations/Amwaj Branch/Stock": "46896"
 }
 
+os.makedirs('talabat_files', exist_ok=True)
 
 def process_file(stock_file_as_binary):
     # Load the product and stock files
