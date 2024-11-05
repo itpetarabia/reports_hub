@@ -108,14 +108,17 @@ def sftp_upload_files(list_of_file_paths):
         transport.close()
     
     except Exception as e:
-        print(f"An error occurred: {e}")
+        raise f"An error occurred: {e}"
 
 
 # if __name__ == '__main__':
 
 def process_and_send_stock(binary_file):
+    st.toast('Processing File')
     process_file(binary_file)
+
     files = [os.path.join('talabat_files', file) for file in os.listdir('talabat_files')]
-    # print(files)
+    st.toast('Sending File To Talabat')
     sftp_upload_files(files)
+    st.toast('Done 🎉')
     
