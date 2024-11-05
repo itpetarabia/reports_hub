@@ -2,6 +2,7 @@ import os
 
 import pandas as pd
 import paramiko
+import streamlit as st
 
 # Example of locations dictionary
 locations = {
@@ -75,12 +76,12 @@ def process_file(stock_file_as_binary):
 
 
 # SFTP server detail
-# env = os.environ
+# env = st.secrets
 
-hostname = os.environ['SFTP_HOSTNAME']
-port = int(os.environ['SFTP_PORT'])
-username = os.environ['SFTP_USER']
-password = os.environ['SFTP_PASS']
+hostname = st.secrets['SFTP_HOSTNAME']
+port = int(st.secrets['SFTP_PORT'])
+username = st.secrets['SFTP_USER']
+password = st.secrets['SFTP_PASS']
 remote_folder = 'assortment'  # The remote folder where you want to copy the file
 
 
